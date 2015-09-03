@@ -68,7 +68,7 @@ roach.write_int('spead_hdr_version', 4)
 roach.write_int('spead_hdr_item_ptr_width', 3)
 roach.write_int('spead_hdr_heap_addr_width', 5)
 roach.write_int('spead_hdr_reserved', 0)
-roach.write_int('spead_hdr_n_items', 7)
+roach.write_int('spead_hdr_n_items', 6)
 
 set_item(roach, 'payload_len', 0x10, opts.payload_len*8)
 # ref time has a start value which is then incremented
