@@ -61,8 +61,20 @@ time.sleep(0.1)
 
 # Configure header properties
 print 'Configuring headers'
+
+#spead header
+roach.write_int('spead_hdr_magic', 83)
+roach.write_int('spead_hdr_version', 4)
+roach.write_int('spead_hdr_item_ptr_width', 3)
+roach.write_int('spead_hdr_heap_addr_width', 5)
+roach.write_int('spead_hdr_reserved', 0)
+roach.write_int('spead_hdr_n_items', 7)
+
 set_item(roach, 'payload_len', 0x10, opts.payload_len*8)
+# ref time has a start value which is then incremented
 set_item(roach, 'ref_time', 0x11, int(time.time()))
+set_incrementor(roach, 'ref_time', 0, 1) #don't increment
+
 set_item(roach, 'stat_tile', 0x12)
 roach.write_int('stat_tile_station', 0)
 roach.write_int('stat_tile_tile', 0)
@@ -77,8 +89,10 @@ roach.write_int('ant_chan_id_n_chans', opts.n_chans)
 roach.write_int('ant_chan_id_n_ants', opts.n_ants)
 
 # configure test vector data
+# packets count every 16bit sample, starting at the value set in the tvg bram
 print 'Loading TVG data'
-tvg = np.arange(2**16, dtype='>h')
+#tvg = np.arange(2**16, dtype='>h')
+tvg = np.zeros(2**16, dtype='>h') #counters for all packets start at 0
 roach.write('payload_bram', tvg.tostring())
 
 # configure tge core
